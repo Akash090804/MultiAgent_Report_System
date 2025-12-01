@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-multipart
+aiofiles
+python-dotenv
+google-adk
+google-generativeai
+reportlab
+markdown2

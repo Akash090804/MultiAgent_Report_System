@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Report Generator - Multi-Agent System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-robot text-4xl text-blue-600"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">AI Report Generator</h1>
+                        <p class="text-sm text-gray-500">Multi-Agent Academic Report System</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                        <i class="fas fa-circle text-xs text-green-500 animate-pulse"></i> Online
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container mx-auto px-6 py-8">
+        
+        <!-- Info Banner -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-lg">
+            <div class="flex items-start">
+                <i class="fas fa-info-circle text-blue-500 mt-1 mr-3"></i>
+                <div>
+                    <h3 class="font-semibold text-blue-800">How it works</h3>
+                    <p class="text-sm text-blue-700 mt-1">
+                        This system uses 5 AI agents (Planner, Researcher, Writer, Formatter, Quality Check) to automatically generate professional academic reports. 
+                        You'll need your own Google AI API key (free tier: 1.5M tokens/day).
+                        <a href="https://aistudio.google.com" target="_blank" class="underline font-semibold">Get API Key →</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            
+            <!-- Form Section -->
+            <div class="p-8" id="formSection">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                    <i class="fas fa-file-alt text-blue-600"></i>
+                    Generate Your Report
+                </h2>
+
+                <form id="reportForm" class="space-y-6">
+                    
+                    <!-- API Key -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-key text-gray-400"></i>
+                            Google AI API Key *
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="apiKey" 
+                                required
+                                placeholder="AIzaSy..." 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                            <button 
+                                type="button" 
+                                id="toggleApiKey"
+                                class="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                            >
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">
+                            Your API key is never stored. Get one from 
+                            <a href="https://aistudio.google.com" target="_blank" class="text-blue-600 hover:underline">Google AI Studio</a>
+                        </p>
+                    </div>
+
+                    <!-- Topic -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-lightbulb text-gray-400"></i>
+                            Project Topic *
+                        </label>
+                        <input 
+                            type="text" 
+                            id="topic" 
+                            required
+                            placeholder="e.g., Machine Learning in Healthcare" 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                        <p class="text-xs text-gray-500 mt-1">Be specific for better results</p>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-align-left text-gray-400"></i>
+                            Detailed Description (Optional)
+                        </label>
+                        <textarea 
+                            id="description" 
+                            rows="4"
+                            placeholder="Add context: objectives, key features, methodology, target audience, etc. This helps generate more relevant content."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        ></textarea>
+                        <p class="text-xs text-gray-500 mt-1">
+                            <i class="fas fa-magic text-yellow-500"></i>
+                            Adding details improves report quality significantly
+                        </p>
+                    </div>
+
+                    <!-- Author Name -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <i class="fas fa-user text-gray-400"></i>
+                            Your Name (Optional)
+                        </label>
+                        <input 
+                            type="text" 
+                            id="author" 
+                            placeholder="Your name for the cover page" 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                    </div>
+
+                    <!-- PDF Option -->
+                    <div class="flex items-center">
+                        <input 
+                            type="checkbox" 
+                            id="generatePdf" 
+                            checked
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        >
+                        <label for="generatePdf" class="ml-2 text-sm text-gray-700">
+                            Generate PDF version (recommended)
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit"
+                        class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg"
+                    >
+                        <i class="fas fa-magic mr-2"></i>
+                        Generate Report
+                    </button>
+                </form>
+            </div>
+
+            <!-- Progress Section (Hidden initially) -->
+            <div id="progressSection" class="hidden p-8 bg-gray-50">
+                <div class="text-center mb-6">
+                    <div class="inline-block">
+                        <i class="fas fa-cog fa-spin text-6xl text-blue-600 mb-4"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800" id="progressTitle">
+                        Generating Your Report...
+                    </h3>
+                    <p class="text-gray-600 mt-2" id="progressStage">Initializing...</p>
+                    <p class="text-sm text-gray-500 mt-1">5 AI agents working together</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden">
+                    <div 
+                        id="progressBar" 
+                        class="bg-gradient-to-r from-blue-500 to-indigo-600 h-4 rounded-full transition-all duration-500 ease-out"
+                        style="width: 0%"
+                    ></div>
+                </div>
+                <p class="text-center text-sm text-gray-600">
+                    <span id="progressPercent">0</span>% complete
+                </p>
+
+                <!-- Agent Progress -->
+                <div class="mt-6 grid grid-cols-2 md:grid-cols-5 gap-3">
+                    <div class="text-center p-3 bg-white rounded-lg shadow" id="agent-planner">
+                        <i class="fas fa-clipboard-list text-2xl text-gray-300 mb-2"></i>
+                        <p class="text-xs text-gray-500">Planner</p>
+                    </div>
+                    <div class="text-center p-3 bg-white rounded-lg shadow" id="agent-researcher">
+                        <i class="fas fa-search text-2xl text-gray-300 mb-2"></i>
+                        <p class="text-xs text-gray-500">Researcher</p>
+                    </div>
+                    <div class="text-center p-3 bg-white rounded-lg shadow" id="agent-writer">
+                        <i class="fas fa-pen text-2xl text-gray-300 mb-2"></i>
+                        <p class="text-xs text-gray-500">Writer</p>
+                    </div>
+                    <div class="text-center p-3 bg-white rounded-lg shadow" id="agent-formatter">
+                        <i class="fas fa-check-circle text-2xl text-gray-300 mb-2"></i>
+                        <p class="text-xs text-gray-500">Formatter</p>
+                    </div>
+                    <div class="text-center p-3 bg-white rounded-lg shadow" id="agent-qc">
+                        <i class="fas fa-broom text-2xl text-gray-300 mb-2"></i>
+                        <p class="text-xs text-gray-500">Quality Check</p>
+                    </div>
+                </div>
+
+                <!-- Estimated Time -->
+                <p class="text-center text-xs text-gray-500 mt-4">
+                    <i class="fas fa-clock"></i>
+                    Estimated time: 2-3 minutes
+                </p>
+            </div>
+
+            <!-- Success Section (Hidden initially) -->
+            <div id="successSection" class="hidden p-8 bg-green-50">
+                <div class="text-center mb-6">
+                    <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-800">Report Generated Successfully!</h3>
+                    <p class="text-gray-600 mt-2">Your report is ready to download</p>
+                </div>
+
+                <!-- Download Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+                    <a 
+                        id="downloadPdf" 
+                        href="#"
+                        class="flex items-center justify-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all shadow-lg"
+                    >
+                        <i class="fas fa-file-pdf mr-2"></i>
+                        Download PDF
+                    </a>
+                    <a 
+                        id="downloadMarkdown" 
+                        href="#"
+                        class="flex items-center justify-center px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition-all shadow-lg"
+                    >
+                        <i class="fas fa-file-alt mr-2"></i>
+                        Download Markdown
+                    </a>
+                </div>
+
+                <!-- Generate Another -->
+                <div class="text-center">
+                    <button 
+                        id="generateAnother"
+                        class="text-blue-600 hover:text-blue-800 font-semibold"
+                    >
+                        <i class="fas fa-plus mr-2"></i>
+                        Generate Another Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Section (Hidden initially) -->
+            <div id="errorSection" class="hidden p-8 bg-red-50">
+                <div class="text-center mb-6">
+                    <i class="fas fa-exclamation-circle text-6xl text-red-500 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-800">Generation Failed</h3>
+                    <p class="text-gray-600 mt-2" id="errorMessage">An error occurred</p>
+                </div>
+
+                <div class="text-center">
+                    <button 
+                        id="tryAgain"
+                        class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+                    >
+                        <i class="fas fa-redo mr-2"></i>
+                        Try Again
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Info -->
+        <div class="mt-8 text-center text-sm text-gray-600">
+            <p>
+                <i class="fas fa-info-circle"></i>
+                Free tier: ~75 reports per day • Each report uses ~20,000 tokens
+            </p>
+            <p class="mt-2">
+                Made with <i class="fas fa-heart text-red-500"></i> for students
+            </p>
+        </div>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
